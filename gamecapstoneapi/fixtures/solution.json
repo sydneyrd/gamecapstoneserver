@@ -1,0 +1,23 @@
+[
+    {
+        "model": "gamecapstoneapi.solution",
+        "pk": 1,
+        "fields": {
+            "label": "this is the first solution"
+        }
+    },
+    {
+        "model": "gamecapstoneapi.solution",
+        "pk": 2,
+        "fields": {
+            "label": "this is the second solution"
+        }
+    },
+    {
+        "model": "gamecapstoneapi.solution",
+        "pk": 3,
+        "fields": {
+            "label": "this is the third solution"
+        }
+    }
+]

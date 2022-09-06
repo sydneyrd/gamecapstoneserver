@@ -1,0 +1,20 @@
+
+    [
+        {
+            "model": "gamecapstoneapi.Question",
+            "pk": 1,
+            "fields": {
+                "label": "This is the first question solution, solution",
+                "difficulty": 1,
+                "solutions": [1, 2]
+            }     },
+        {
+            "model": "gamecapstoneapi.Question",
+            "pk": 2,
+            "fields": {
+                "label": "this is the second question, solution, solution",
+                "difficulty": 2,
+                "solutions": [2, 3]
+            }
+        }]
+
