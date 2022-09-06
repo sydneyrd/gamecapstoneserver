@@ -41,7 +41,6 @@ class AuthTests(APITestCase):
             is_superuser=0,
             first_name="Steve",
             last_name="Brownlee",
-            date_joined="2022-02-02 12:51:39.989000",
             is_staff=0,
             is_active=1
 )
@@ -79,3 +78,15 @@ class AuthTests(APITestCase):
         expected = SlotUserSerializer(all_users, many=True)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(expected.data, response.data)
+    def test_delete_slot_user(self):
+        """
+        Ensure we can delete a user account.
+        """
+        # Define the URL path for deleting an existing Game
+        url = f'/users/{self.user.id}'
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        response = self.client.get(url)
+        # Assert that the response status code is 404 (NOT FOUND)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
