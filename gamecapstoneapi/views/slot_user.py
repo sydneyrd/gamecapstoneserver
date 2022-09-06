@@ -37,14 +37,11 @@ class SlotUserView(ViewSet):
     def update(self, request, pk):
         """Response -- Empty body with 204 status code"""
         user = User.objects.get(pk=pk)
-        slot_user = SlotUser.objects.get(user=request.auth.user)
         user.first_name = request.data['first_name']
         user.last_name = request.data['last_name']
         user.email = request.data['email']
-        slot_user.save()
         user.save()
         serializer = UserSerializer(user)
-        serializer = SlotUserSerializer(slot_user)
         return Response(serializer.data, status=status.HTTP_204_NO_CONTENT) 
 
     def destroy(self, request, pk):
