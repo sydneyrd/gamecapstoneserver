@@ -64,14 +64,13 @@ class SlotUserView(ViewSet):
     #     return Response(serializer.data, status=status.HTTP_200_OK) 
 
 
-    # @action(methods=["put"], detail=True)
-    # def change_staff_status(self, request, pk):
-    #     rare_user = RareUser.objects.get(pk=pk)
-        
-    #     rare_user.user.is_staff = not rare_user.user.is_staff
-    #     rare_user.user.save()
-    #     serializer = UserSerializer(rare_user.user)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
+    @action(methods=["put"], detail=True)
+    def change_staff_status(self, request, pk):
+        slot_user = SlotUser.objects.get(pk=pk)
+        slot_user.user.is_staff = not slot_user.user.is_staff
+        slot_user.user.save()
+        serializer = UserSerializer(slot_user.user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 
