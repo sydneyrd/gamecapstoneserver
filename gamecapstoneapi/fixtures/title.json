@@ -1,0 +1,15 @@
+    [
+        {
+            "model": "gamecapstoneapi.Title",
+            "pk": 1,
+            "fields": {
+                "label": "noob"
+            }},
+            {
+                "model": "gamecapstoneapi.Title",
+                "pk": 2,
+                "fields": {
+                    "label": "degen"
+                }
+            }
+        ]

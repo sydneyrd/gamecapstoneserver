@@ -1,0 +1,25 @@
+[
+        {
+            "model": "gamecapstoneapi.QuestionSolution",
+            "pk": 1,
+            "fields": {
+                "question": 1,
+                "solution": 1
+            }     },
+        {
+            "model": "gamecapstoneapi.QuestionSolution",
+            "pk": 2,
+            "fields": {
+                "question": 1,
+                "solution": 2
+            }
+        }, {
+            "model": "gamecapstoneapi.QuestionSolution",
+            "pk": 3,
+            "fields": {
+                "question": 2,
+                "solution": 2
+            }
+        }
+    ]
+

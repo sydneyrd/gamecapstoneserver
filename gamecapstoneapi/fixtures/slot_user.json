@@ -1,0 +1,22 @@
+
+    [
+        {
+            "model": "gamecapstoneapi.SlotUser",
+            "pk": 1,
+            "fields": {
+                "user": 1,
+                "title": 1,
+                "score": 100,
+                "session_score": 200
+            }     },
+        {
+            "model": "gamecapstoneapi.SlotUser",
+            "pk": 2,
+            "fields": {
+                "user": 2,
+                "title": 2,
+                "score": 100,
+                "session_score": 300
+            }
+        }]
+
