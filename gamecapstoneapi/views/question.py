@@ -16,9 +16,9 @@ class QuestionView(ViewSet):
     """ Question Views """
 
     def retrieve(self, request, pk):
-        """Handle GET requests for single game type
+        """Handle GET requests for single question
         Returns:
-            Response -- JSON serialized game type"""
+            Response -- JSON serialized question"""
         try:
             question = Question.objects.get(pk=pk)
             serializer = QuestionSerializer(question)
@@ -26,41 +26,19 @@ class QuestionView(ViewSet):
         except Question.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
         
-    # def list(self, request):
-    #     """Handle GET requests to get all game types
-    #     Returns:
-    #         Response -- JSON serialized list of game types
-    #     """
-    #     posts = Post.objects.all()
-    #     subscriptions = self.request.query_params.get('subscriptions', None)
-    #     if subscriptions is not None:
-    #         currentuser = RareUser.objects.get(user=request.auth.user)
-    #         subs = currentuser.follower.all()
-    #         subbed_posts = []
-    #         for sub in subs:
-    #             for post in posts:
-    #                 if post.user == sub.author:
-    #                     subbed_posts.append(post)
-
-    #         posts = set(subbed_posts)
-    #         # only posts whose authorId matches the authors subscribed to
-
-    #     search_text = self.request.query_params.get('title', None)
-    #     if search_text is not None:
-    #         posts = Post.objects.filter(
-    #             Q(title__contains=search_text) |
-    #             Q(content__contains=search_text))
-    #     user = request.query_params.get('user', None)
-    #     if user is not None:
-    #         posts = Post.objects.filter(user=user)
-    #     category = request.query_params.get('category', None)
-    #     if category is not None:
-    #         posts = Post.objects.filter(category=category)
-    #     tag = request.query_params.get('tag_id', None)
-    #     if tag is not None:
-    #         posts = Post.objects.filter(tags=tag)
-    #     serializer = PostSerializer(posts, many=True)
-    #     return Response(serializer.data)
+    def list(self, request):
+        """Handle GET requests to get all questions
+        Returns:
+            Response -- JSON serialized list of questions
+        """
+        questions = Question.objects.all()
+        search_text = self.request.query_params.get('title', None)
+        if search_text is not None:
+            questions = Question.objects.filter(
+                Q(title__contains=search_text) |
+                Q(content__contains=search_text))
+        serializer = QuestionSerializer(questions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     # def create(self, request):
     #     """Handle POST operations"""
