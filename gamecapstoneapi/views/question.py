@@ -90,10 +90,10 @@ class QuestionView(ViewSet):
     #     post.tags.add(*request.data['tags'])
     #     return Response(None, status=status.HTTP_204_NO_CONTENT)
 
-    # def destroy(self, request, pk):
-    #     post = Post.objects.get(pk=pk)
-    #     post.delete()
-    #     return Response(None, status=status.HTTP_204_NO_CONTENT)
+    def destroy(self, request, pk):
+        question = Question.objects.get(pk=pk)
+        question.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
     # @action(methods=['post'], detail=True)
     # def add(self, request, pk):

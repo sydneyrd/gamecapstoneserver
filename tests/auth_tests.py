@@ -122,3 +122,15 @@ class AuthTests(APITestCase):
         self.assertEqual(status.HTTP_200_OK, response.status_code)
         self.assertEqual(expected.data, response.data)
 
+    def test_delete_question(self):
+        """
+        Ensure we can delete a question.
+        """
+        # Define the URL path for deleting an existing Game
+        url = f'/questions/{self.question.id}'
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        response = self.client.get(url)
+        # Assert that the response status code is 404 (NOT FOUND)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
