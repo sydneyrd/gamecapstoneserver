@@ -1,4 +1,4 @@
-from gamecapstoneapi.models import SlotUser
+from gamecapstoneapi.models import SlotUser, Question, Solution
 from gamecapstoneapi.views.slot_user import SlotUserSerializer
 from contextlib import nullcontext
 from datetime import datetime
@@ -50,6 +50,10 @@ class AuthTests(APITestCase):
         session_score=None,
         score=None
         )
+        self.question = Question.objects.create(
+            label="label",
+            difficulty=1
+        )
 
     def test_get_user(self):
         """
@@ -89,4 +93,20 @@ class AuthTests(APITestCase):
         response = self.client.get(url)
         # Assert that the response status code is 404 (NOT FOUND)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_get_question(self):
+        """Ensure we can GET a question.
+        """
+        # Define the URL path for getting a single Game
+        url = f'/questions/{self.question.id}'
+        # Initiate GET request and capture the response
+        response = self.client.get(url)
+        # Assert that the response status code is 200 (OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Assert that the values are correct
+        # self.assertEqual(response.data["gamer"]['id'], self.game.gamer_id)
+        self.assertEqual(response.data["label"], self.Question.label)
+        self.assertEqual(response.data["difficulty"], self.Question.difficulty)
+        # self.assertEqual(response.data["user"], self.SlotUser.user) why can't i get this to work?
+        self.assertEqual(response.data["solution"], self.Question.solution)
 
