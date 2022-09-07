@@ -8,7 +8,7 @@ from gamecapstoneapi.views import register_user, login_user, SlotUserView, Quest
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', SlotUserView, 'users'),
-router.register(r'questions', QuestionView, 'questions')
+router.register(r'questions', QuestionView, 'questions'),
 router.register(r'solutions', SolutionView, 'solutions')
 
 urlpatterns = [

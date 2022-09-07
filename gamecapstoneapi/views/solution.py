@@ -14,7 +14,6 @@ class SolutionView(ViewSet):
     def retrieve(self, request, pk):
         """handle GET requests for a single user
         """
-
         try:
             solution = Solution.objects.get(pk=pk)
             serializer = SolutionSerializer(solution)
@@ -28,7 +27,7 @@ class SolutionView(ViewSet):
             Response -- JSON serialized list of RareUsers
         """
         solution = Solution.objects.all()
-        serializer = SlotUserSerializer(solution, many=True)
+        serializer = SolutionSerializer(solution, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     
@@ -44,9 +43,6 @@ class SolutionView(ViewSet):
         solution = Solution.objects.get(pk=pk)
         solution.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-
-
-
 
     # @action(methods=['put'], detail=True)
     # def change_active_status(self, request, pk):
@@ -67,11 +63,6 @@ class SolutionView(ViewSet):
     #     slot_user.user.save()
     #     serializer = UserSerializer(slot_user.user)
     #     return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-
-
-
 
 class SolutionSerializer(serializers.ModelSerializer):
     class Meta:

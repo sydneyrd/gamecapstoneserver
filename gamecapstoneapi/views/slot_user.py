@@ -24,12 +24,10 @@ class SlotUserView(ViewSet):
 
     def list(self, request):
         """Handle GET requests to get all RareUsers
-
         Returns:
             Response -- JSON serialized list of RareUsers
         """
         slot_users = SlotUser.objects.all().order_by("user__username")
-        
         serializer = SlotUserSerializer(slot_users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
