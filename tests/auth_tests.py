@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 class AuthTests(APITestCase):
     def setUp(self):
         """
-        Create a new Gamer, collect the auth Token, and create a sample GameType
+        Create a new slotuser, collect the auth Token, and create a sample question
         """
         # Define the URL path for registering a Gamer
         url = '/register'
@@ -51,10 +51,17 @@ class AuthTests(APITestCase):
         session_score=None,
         score=None
         )
+        self.solution = Solution.objects.create(
+            label="label"
+        )
         self.question = Question.objects.create(
             label="label",
-            difficulty=1
+            difficulty=1,
+            solution=Solution.set(self.solution)
+            
         )
+        
+#many to many in tests how make work? ?
 
     def test_get_user(self):
         """
@@ -126,7 +133,6 @@ class AuthTests(APITestCase):
         """
         Ensure we can delete a question.
         """
-        # Define the URL path for deleting an existing Game
         url = f'/questions/{self.question.id}'
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
