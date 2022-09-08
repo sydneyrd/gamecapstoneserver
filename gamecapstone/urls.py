@@ -4,10 +4,12 @@ from django.urls import path
 from rest_framework import routers
 from django.conf.urls.static import static
 from django.conf import settings
-from gamecapstoneapi.views import register_user, login_user, SlotUserView
+from gamecapstoneapi.views import register_user, login_user, SlotUserView, QuestionView, SolutionView
 
 router = routers.DefaultRouter(trailing_slash=False)
-router.register(r'users', SlotUserView, 'users')
+router.register(r'users', SlotUserView, 'users'),
+router.register(r'questions', QuestionView, 'questions'),
+router.register(r'solutions', SolutionView, 'solutions')
 
 urlpatterns = [
     path('register', register_user),

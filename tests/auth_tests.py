@@ -1,5 +1,6 @@
-from gamecapstoneapi.models import SlotUser
+from gamecapstoneapi.models import SlotUser, Question, Solution
 from gamecapstoneapi.views.slot_user import SlotUserSerializer
+from gamecapstoneapi.views.question import QuestionSerializer 
 from contextlib import nullcontext
 from datetime import datetime
 from imp import NullImporter
@@ -11,7 +12,7 @@ from django.contrib.auth.models import User
 class AuthTests(APITestCase):
     def setUp(self):
         """
-        Create a new Gamer, collect the auth Token, and create a sample GameType
+        Create a new slotuser, collect the auth Token, and create a sample question
         """
         # Define the URL path for registering a Gamer
         url = '/register'
@@ -50,19 +51,26 @@ class AuthTests(APITestCase):
         session_score=None,
         score=None
         )
+        self.solution = Solution.objects.create(
+            label="label"
+        )
+        self.question = Question.objects.create(
+            label="label",
+            difficulty=1,
+            # solution=Solution.set(self.solution)
+            
+        )
+        
+#many to many in tests how make work? ?
 
     def test_get_user(self):
         """
         Ensure we can GET users.
         """
-        # Define the URL path for getting a single Game
         url = f'/users/{self.user.id}'
         # Initiate GET request and capture the response
         response = self.client.get(url)
-        # Assert that the response status code is 200 (OK)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # Assert that the values are correct
-        # self.assertEqual(response.data["gamer"]['id'], self.game.gamer_id)
         self.assertEqual(response.data["score"], self.SlotUser.score)
         self.assertEqual(response.data["session_score"], self.SlotUser.session_score)
         # self.assertEqual(response.data["user"], self.SlotUser.user) why can't i get this to work?
@@ -73,7 +81,6 @@ class AuthTests(APITestCase):
         """
         url = '/users'
         response = self.client.get(url)
-        # Get all the games in the database and serialize them to get the expected output
         all_users = SlotUser.objects.all()
         expected = SlotUserSerializer(all_users, many=True)
         self.assertEqual(status.HTTP_200_OK, response.status_code)
@@ -82,11 +89,45 @@ class AuthTests(APITestCase):
         """
         Ensure we can delete a user account.
         """
-        # Define the URL path for deleting an existing Game
         url = f'/users/{self.user.id}'
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         response = self.client.get(url)
-        # Assert that the response status code is 404 (NOT FOUND)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_get_question(self):
+        """Ensure we can GET a question.
+        """
+        # Define the URL path for getting a single Game
+        url = f'/questions/{self.question.id}'
+        # Initiate GET request and capture the response
+        response = self.client.get(url)
+        # Assert that the response status code is 200 (OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Assert that the values are correct
+        # self.assertEqual(response.data["gamer"]['id'], self.game.gamer_id)
+        self.assertEqual(response.data["label"], self.question.label)
+        self.assertEqual(response.data["difficulty"], self.question.difficulty)
+        # self.assertEqual(response.data["user"], self.SlotUser.user) why can't i get this to work?
+        # self.assertEqual(response.data["solution"], self.question.solution) many to many in tests need to ask 
+
+    def test_list_questions(self):
+        """Test list users
+        """
+        url = '/questions'
+        response = self.client.get(url)
+        all_questions = Question.objects.all()
+        expected = QuestionSerializer(all_questions, many=True)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(expected.data, response.data)
+
+    def test_delete_question(self):
+        """
+        Ensure we can delete a question.
+        """
+        url = f'/questions/{self.question.id}'
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

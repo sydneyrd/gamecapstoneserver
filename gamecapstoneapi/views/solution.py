@@ -6,20 +6,19 @@ from rest_framework import serializers, status
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from django.core.files.base import ContentFile
-from gamecapstoneapi.models.slot_user import SlotUser
+from gamecapstoneapi.models.solution import Solution
 
-class SlotUserView(ViewSet):
+class SolutionView(ViewSet):
     """Rare User view"""
 
     def retrieve(self, request, pk):
         """handle GET requests for a single user
         """
-
         try:
-            user = SlotUser.objects.get(pk=pk)
-            serializer = SlotUserSerializer(user)
+            solution = Solution.objects.get(pk=pk)
+            serializer = SolutionSerializer(solution)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except SlotUser.DoesNotExist as ex:
+        except Solution.DoesNotExist as ex:
             return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request):
@@ -27,28 +26,23 @@ class SlotUserView(ViewSet):
         Returns:
             Response -- JSON serialized list of RareUsers
         """
-        slot_users = SlotUser.objects.all().order_by("user__username")
-        serializer = SlotUserSerializer(slot_users, many=True)
+        solution = Solution.objects.all()
+        serializer = SolutionSerializer(solution, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     
     def update(self, request, pk):
         """Response -- Empty body with 204 status code"""
-        user = User.objects.get(pk=pk)
-        user.first_name = request.data['first_name']
-        user.last_name = request.data['last_name']
-        user.email = request.data['email']
-        user.save()
-        serializer = UserSerializer(user)
+        solution = Solution.objects.get(pk=pk)
+        solution.label = request.data['label']
+        solution.save()
+        serializer = SolutionSerializer(solution)
         return Response(serializer.data, status=status.HTTP_204_NO_CONTENT) 
 
     def destroy(self, request, pk):
-        user = User.objects.get(pk=pk)
-        user.delete()
+        solution = Solution.objects.get(pk=pk)
+        solution.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
-
-
-
 
     # @action(methods=['put'], detail=True)
     # def change_active_status(self, request, pk):
@@ -62,28 +56,15 @@ class SlotUserView(ViewSet):
     #     return Response(serializer.data, status=status.HTTP_200_OK) 
 
 
-    @action(methods=["put"], detail=True)
-    def change_staff_status(self, request, pk):
-        slot_user = SlotUser.objects.get(pk=pk)
-        slot_user.user.is_staff = not slot_user.user.is_staff
-        slot_user.user.save()
-        serializer = UserSerializer(slot_user.user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    # @action(methods=["put"], detail=True)
+    # def change_staff_status(self, request, pk):
+    #     slot_user = SlotUser.objects.get(pk=pk)
+    #     slot_user.user.is_staff = not slot_user.user.is_staff
+    #     slot_user.user.save()
+    #     serializer = UserSerializer(slot_user.user)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-
-
-
-
-class UserSerializer(serializers.ModelSerializer):
+class SolutionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'email', 'is_staff')
-        # ordering =  ['username']
-
-class SlotUserSerializer(serializers.ModelSerializer):
-    """JSON serializer for RareUsers"""
-    user = UserSerializer()
-    class Meta:
-        model = SlotUser
-        fields = ('id',  'user', 'title', 'score', 'session_score')
+        model = Solution
+        fields = ('id', 'label')
