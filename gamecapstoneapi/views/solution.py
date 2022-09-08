@@ -44,6 +44,13 @@ class SolutionView(ViewSet):
         solution.delete()
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
+    def create(self, request):
+        """Handle POST operations"""
+        solution = Solution.objects.create(
+                label=request.data['label']
+            )
+        serializer = SolutionSerializer(solution)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     # @action(methods=['put'], detail=True)
     # def change_active_status(self, request, pk):
     #     """Handle PUT requests for a user
@@ -67,4 +74,4 @@ class SolutionView(ViewSet):
 class SolutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Solution
-        fields = ('id', 'label')
+        fields = ('id','label')
