@@ -29,15 +29,18 @@ class QuestionView(ViewSet):
         Returns:
             Response -- JSON serialized list of questions
         """
+        
         questions = Question.objects.all()
         search_text = self.request.query_params.get('search', None)
-        difficulty = self.request.query_params.get('difficulty', None)
         if search_text is not None:
             questions = Question.objects.filter(
                 Q(label__contains=search_text))
-        if difficulty is None:
-            questions = Question.objects.filter(
+        difficulty = self.request.query_params.get('difficulty', None)
+        if difficulty is not None:
+            questions = Question.objects.filter( 
                 difficulty=difficulty)
+        
+    
         serializer = QuestionSerializer(questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
