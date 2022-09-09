@@ -1,6 +1,7 @@
 from gamecapstoneapi.models import SlotUser, Question, Solution
 from gamecapstoneapi.views.slot_user import SlotUserSerializer
 from gamecapstoneapi.views.question import QuestionSerializer 
+from gamecapstoneapi.views.solution import SolutionSerializer
 from contextlib import nullcontext
 from datetime import datetime
 from imp import NullImporter
@@ -131,3 +132,31 @@ class AuthTests(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_get_solution(self):
+        """
+        Ensure we can GET users.
+        """
+        url = f'/solutions/{self.solution.id}'
+        # Initiate GET request and capture the response
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["label"], self.solution.label)
+
+    def test_list_solutions(self):
+        """Test list users
+        """
+        url = '/solutions'
+        response = self.client.get(url)
+        all_solutions = Solution.objects.all()
+        expected = SolutionSerializer(all_solutions, many=True)
+        self.assertEqual(status.HTTP_200_OK, response.status_code)
+        self.assertEqual(expected.data, response.data)
+    def test_delete_solution(self):
+        """
+        Ensure we can delete a solution.
+        """
+        url = f'/solutions/{self.solution.id}'
+        response = self.client.delete(url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
