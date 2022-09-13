@@ -14,7 +14,6 @@ class SlotUserView(ViewSet):
     def retrieve(self, request, pk):
         """handle GET requests for a single user
         """
-
         try:
             user = SlotUser.objects.get(pk=pk)
             serializer = SlotUserSerializer(user)
