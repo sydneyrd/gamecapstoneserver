@@ -51,16 +51,6 @@ class SolutionView(ViewSet):
             )
         serializer = SolutionSerializer(solution)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    # @action(methods=['put'], detail=True)
-    # def change_active_status(self, request, pk):
-    #     """Handle PUT requests for a user
-        
-    #     Response --  200 OK status code"""
-    #     rare_user = RareUser.objects.get(pk=pk)
-    #     rare_user.user.is_active = not rare_user.user.is_active
-    #     rare_user.user.save()
-    #     serializer = UserSerializer(rare_user.user)
-    #     return Response(serializer.data, status=status.HTTP_200_OK) 
 
 
     # @action(methods=["put"], detail=True)

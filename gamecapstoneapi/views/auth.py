@@ -33,6 +33,7 @@ def login_user(request):
     else:
         data = {'valid': False}
     return Response(data)
+
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
@@ -41,7 +42,6 @@ def register_user(request):
     Method arguments:
     request -- The full HTTP request object
     '''
-
     # TODO: this is only adding the username and password, if you want to add in more user fields like first and last name update this code
     new_user = User.objects.create_user(
         username=request.data['username'],
@@ -59,7 +59,6 @@ def register_user(request):
         score=None,
         session_score=None
     )
-
 
     # TODO: If you need to send the client more information update the data dict
     token = Token.objects.create(user=slot_user.user)

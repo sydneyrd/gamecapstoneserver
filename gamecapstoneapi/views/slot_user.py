@@ -49,16 +49,17 @@ class SlotUserView(ViewSet):
 
 
 
-    # @action(methods=['put'], detail=True)
-    # def change_active_status(self, request, pk):
-    #     """Handle PUT requests for a user
-        
-    #     Response --  200 OK status code"""
-    #     rare_user = RareUser.objects.get(pk=pk)
-    #     rare_user.user.is_active = not rare_user.user.is_active
-    #     rare_user.user.save()
-    #     serializer = UserSerializer(rare_user.user)
-    #     return Response(serializer.data, status=status.HTTP_200_OK) 
+    @action(methods=['put'], detail=True)
+    def change_score(self, request, pk):
+        """Handle PUT requests for a user
+        Response --  200 OK status code"""
+        slot_user = SlotUser.objects.get(pk=pk)
+        score = request.data['score']
+        if score > 0:
+                slot_user.score = request.data['score']
+                slot_user.save()
+                return Response(status=status.HTTP_204_NO_CONTENT) 
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
     @action(methods=["put"], detail=True)
